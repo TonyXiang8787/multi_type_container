@@ -6,6 +6,13 @@
 
 int main()
 {
+	multi_type_container::Container<C, C1, C2> container;
+	container.emplace<C>(1, 5);
+	container.emplace<C1>(2, 6, 60);
+	container.emplace<C2>(3, 7, 70);
+	container.emplace<C2>(3, 7, 70);
+
+
     std::cout << "Hello World!\n"; 
 }
 
