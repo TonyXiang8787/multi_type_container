@@ -52,6 +52,7 @@ struct Idx {
 template<class... T>
 class Container {
 public:
+	static constexpr size_t N = sizeof...(T);
 	// default constructor, assignment operator
 	// emplace stuff
 	template<class U, class... Args>
