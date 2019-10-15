@@ -18,6 +18,8 @@ int main()
 	std::cout << c.a << "\n";
 	std::cout << c1.a << "\n";
 	std::cout << c2.a << "\n";
+	std::cout << container.size_per_idx(0) << "\n";
+	std::cout << container.size_per_type<C>() << "\n";
 
     std::cout << "Hello World!\n"; 
 }

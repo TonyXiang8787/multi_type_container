@@ -83,6 +83,16 @@ public:
 		return get_item<U>(found->second);
 	}
 
+	// size of a vector
+	template<class U>
+	size_t size_per_type() {
+		return std::get<std::vector<U>>(vectors_).size();
+	}
+	size_t size_per_idx(size_t idx_vec) {
+		constexpr std::array func_arr{ &Container::size_per_type<T>... };
+		return std::invoke(func_arr[idx_vec], *this);
+	}
+
 private:
 	std::tuple<std::vector<T>...> vectors_;
 	std::unordered_map<ID, Idx> map_;
@@ -97,6 +107,8 @@ private:
 			throw std::exception{};
 		}
 	}
+
+	
 };
 
 }
