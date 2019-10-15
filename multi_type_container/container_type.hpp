@@ -82,7 +82,7 @@ public:
 	template<class U>
 	U& get_item(Idx idx) {
 		constexpr std::array func_arr{ get_item_type<U, T>... };
-		return func_arr[idx.idx_vec](idx.idx_pos);
+		return func_arr[idx.idx_vec](vectors_, idx.idx_pos);
 	}
 	template<class U>
 	U& get_item(ID id) {

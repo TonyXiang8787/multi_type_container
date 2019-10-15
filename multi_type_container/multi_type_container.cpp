@@ -10,8 +10,14 @@ int main()
 	container.emplace<C>(1, 5);
 	container.emplace<C1>(2, 6, 60);
 	container.emplace<C2>(3, 7, 70);
-	container.emplace<C2>(3, 7, 70);
 
+	C& c = container.get_item<C>(1);
+	C& c1 = container.get_item<C>(2);
+	C& c2 = container.get_item<C>(3);
+
+	std::cout << c.a << "\n";
+	std::cout << c1.a << "\n";
+	std::cout << c2.a << "\n";
 
     std::cout << "Hello World!\n"; 
 }
