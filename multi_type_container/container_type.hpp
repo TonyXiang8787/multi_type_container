@@ -10,6 +10,7 @@
 #include <limits>
 #include <iterator>
 #include <exception>
+#include <functional>
 
 struct C {
 	C(int a1) :a{ a1 } {}
@@ -68,21 +69,10 @@ public:
 	}
 
 	// get item
-	template<class U1, class U2>
-	static U1& get_item_type(
-		std::tuple<std::vector<T>...>& vectors,
-		size_t idx_pos) {
-		if constexpr (std::is_base_of_v<U1, U2>) {
-			return std::get<std::vector<U2>>(vectors)[idx_pos];
-		}
-		else {
-			throw std::exception{};
-		}
-	}
 	template<class U>
 	U& get_item(Idx idx) {
-		constexpr std::array func_arr{ get_item_type<U, T>... };
-		return func_arr[idx.idx_vec](vectors_, idx.idx_pos);
+		constexpr std::array func_arr{ &Container::get_item_type<U, T>... };
+		return std::invoke(func_arr[idx.idx_vec], *this, idx.idx_pos);
 	}
 	template<class U>
 	U& get_item(ID id) {
@@ -96,6 +86,17 @@ public:
 private:
 	std::tuple<std::vector<T>...> vectors_;
 	std::unordered_map<ID, Idx> map_;
+
+	// get item per type
+	template<class U1, class U2>
+	U1& get_item_type(size_t idx_pos) {
+		if constexpr (std::is_base_of_v<U1, U2>) {
+			return std::get<std::vector<U2>>(vectors_)[idx_pos];
+		}
+		else {
+			throw std::exception{};
+		}
+	}
 };
 
 }
