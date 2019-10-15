@@ -28,7 +28,7 @@ struct C2 : C {
 
 namespace multi_type_container {
 
-using IDType = std::make_signed_t<size_t>;
+using ID = std::make_signed_t<size_t>;
 
 // get index of class in classes
 template <class T, class... Ts> struct get_cls_pos;
@@ -54,7 +54,7 @@ public:
 	// default constructor, assignment operator
 	// emplace stuff
 	template<class U, class... Args>
-	void emplace(IDType id, Args&&... args) {
+	void emplace(ID id, Args&&... args) {
 		// throw if id already exist
 		if (map_.find(id) != map_.end()) {
 			throw std::exception{};
@@ -67,9 +67,35 @@ public:
 		map_[id] = Idx{ idx_vec, idx_pos };
 	}
 
+	// get item
+	template<class U1, class U2>
+	static U1& get_item_type(
+		std::tuple<std::vector<T>...>& vectors,
+		size_t idx_pos) {
+		if constexpr (std::is_base_of_v<U1, U2>) {
+			return std::get<std::vector<U2>>(vectors)[idx_pos];
+		}
+		else {
+			throw std::exception{};
+		}
+	}
+	template<class U>
+	U& get_item(Idx idx) {
+		constexpr std::array func_arr{ get_item_type<U, T>... };
+		return func_arr[idx.idx_vec](idx.idx_pos);
+	}
+	template<class U>
+	U& get_item(ID id) {
+		auto found = map_.find(id);
+		if (found == map_.end()) {
+			throw std::exception{};
+		}
+		return get_item<U>(found->second);
+	}
+
 private:
 	std::tuple<std::vector<T>...> vectors_;
-	std::unordered_map<IDType, Idx> map_;
+	std::unordered_map<ID, Idx> map_;
 };
 
 }
