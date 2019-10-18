@@ -13,15 +13,19 @@ int main()
 
 	C& c = container.get_item<C>(1);
 	C& c1 = container.get_item<C>(2);
-	C& c2 = container.get_item<C>(3);
+	C2& c2 = container.get_item<C2>(3);
+	// C2& c3 = container.get_item<C2>(1); // should throw
+	auto& vec1 = container.get_vector<C>();
 
 	std::cout << c.a << "\n";
 	std::cout << c1.a << "\n";
 	std::cout << c2.a << "\n";
+	std::cout << vec1[0].a << "\n";
 	std::cout << container.size_per_idx(0) << "\n";
 	std::cout << container.size_per_type<C>() << "\n";
 
     std::cout << "Hello World!\n"; 
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

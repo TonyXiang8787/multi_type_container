@@ -93,6 +93,11 @@ public:
 		constexpr std::array func_arr{ &Container::size_per_type<T>... };
 		return std::invoke(func_arr[idx_vec], *this);
 	}
+	// get raw vector
+	template<class U>
+	std::vector<U>& get_vector() {
+		return std::get<std::vector<U>>(vectors_);
+	}
 
 private:
 	std::tuple<std::vector<T>...> vectors_;
